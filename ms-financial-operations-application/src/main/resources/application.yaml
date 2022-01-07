@@ -1,0 +1,9 @@
+application:
+  name: @application.name@
+  description: @application.description@
+  version: @application.version@
+
+spring:
+  messages:
+    basename: validations, errors
+    encoding: UTF-8

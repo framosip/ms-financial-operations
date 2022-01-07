@@ -34,3 +34,6 @@ build/
 
 mvn*
 .mvn/
+
+*/.flattened-pom.xml
+.flattened-pom.xml

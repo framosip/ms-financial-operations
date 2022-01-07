@@ -1,0 +1,13 @@
+springdoc:
+  show-actuator: false
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /doc/api
+    disable-swagger-default-url: true
+    operations-sorter: alpha
+
+logging:
+  level:
+    br:
+      com:
+        teknologi: DEBUG
