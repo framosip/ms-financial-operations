@@ -37,6 +37,10 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>financial-operations-rest</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>financial-operations-domain</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

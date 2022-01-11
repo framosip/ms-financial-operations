@@ -42,15 +42,25 @@
 				<artifactId>financial-operations-rest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-<!--			<dependency>-->
-<!--				<groupId>${project.groupId}</groupId>-->
-<!--				<artifactId>financial-operations-domain</artifactId>-->
-<!--				<version>${project.version}</version>-->
-<!--			</dependency>-->
+			<dependency>
+				<groupId>${project.groupId}</groupId>
+				<artifactId>financial-operations-domain</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springdoc</groupId>
 				<artifactId>springdoc-openapi-webflux-ui</artifactId>
 				<version>${springdoc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.modelmapper</groupId>
+				<artifactId>modelmapper</artifactId>
+				<version>3.0.0</version>
+			</dependency>
+			<dependency>
+				<groupId>io.projectreactor</groupId>
+				<artifactId>reactor-core</artifactId>
+				<version>3.4.13</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -58,7 +68,7 @@
 	<modules>
 		<module>ms-financial-operations-application</module>
 		<module>ms-financial-operations-rest</module>
-<!--		<module>ms-financial-operations-domain</module>-->
+		<module>ms-financial-operations-domain</module>
 	</modules>
 
 	<build>

@@ -1,10 +1,8 @@
 package br.com.teknologi.financial.operation.rest.model.request;
 
+import br.com.teknologi.financial.operation.rest.model.constant.OperationSubTypeEnum;
 import br.com.teknologi.financial.operation.rest.model.constant.OperationTypeEnum;
-import br.com.teknologi.financial.operation.rest.model.constant.YesNoEnum;
-import br.com.teknologi.financial.operation.rest.validation.AnyShouldBeYes;
-import br.com.teknologi.financial.operation.rest.validation.NotNullIfFieldIsYes;
-import br.com.teknologi.financial.operation.rest.validation.ShouldBeNoIfFieldIsYes;
+import br.com.teknologi.financial.operation.rest.validation.NotNullIfAnotherFieldHasOperationSubTypeValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -22,12 +20,11 @@ import java.time.YearMonth;
 @RequiredArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(name = "OperationRequest")
-@AnyShouldBeYes(fields = {"isInstallments","isCreditCard"})
-@ShouldBeNoIfFieldIsYes(field = "isInstallments", dependField = "isCreditCard")
-@ShouldBeNoIfFieldIsYes(field = "isCreditCard", dependField = "isInstallments")
-@NotNullIfFieldIsYes(field = "isInstallments", dependField = "installments")
-@NotNullIfFieldIsYes(field = "isInstallments", dependField = "initialInstallment")
-@NotNullIfFieldIsYes(field = "isCreditCard", dependField = "creditCardOperationDate")
+@NotNullIfAnotherFieldHasOperationSubTypeValue(field = "subType", value = OperationSubTypeEnum.INSTALLMENT, dependField = "installments")
+@NotNullIfAnotherFieldHasOperationSubTypeValue(field = "subType", value = OperationSubTypeEnum.INSTALLMENT, dependField = "initialInstallment")
+@NotNullIfAnotherFieldHasOperationSubTypeValue(field = "subType", value = OperationSubTypeEnum.CREDITCARD, dependField = "creditCardOperationDate")
+@NotNullIfAnotherFieldHasOperationSubTypeValue(field = "subType", value = OperationSubTypeEnum.CREDITCARD, dependField = "creditCardId")
+@NotNullIfAnotherFieldHasOperationSubTypeValue(field = "subType", value = OperationSubTypeEnum.SINGLE, dependField = "period")
 public class OperationRequest {
 
     @NonNull
@@ -42,13 +39,8 @@ public class OperationRequest {
 
     @NonNull
     @NotNull
-    @Schema(description = "Is it installments?", required = true)
-    private YesNoEnum isInstallments;
-
-    @NonNull
-    @NotNull
-    @Schema(description = "Is it credit card operation?", required = true)
-    private YesNoEnum isCreditCard;
+    @Schema(description = "Operation subType", required = true)
+    private OperationSubTypeEnum subType;
 
     @NonNull
     @NotNull
@@ -57,6 +49,7 @@ public class OperationRequest {
     @Schema(description = "Operation value", type = "number", format = "double", example = "32.56", required = true)
     private BigDecimal value;
 
+    @Min(value = 2)
     @Schema(description = "Number of installments", type = "integer", example = "5")
     private Integer installments;
 
@@ -66,6 +59,9 @@ public class OperationRequest {
     @Schema(description = "Credit card operation date", type = "string", format = "date", example = "2021-01-10")
     private LocalDate creditCardOperationDate;
 
+    @Schema(description = "Credit card Id", type = "integer", example = "23")
+    private Integer creditCardId;
+
     @NonNull
     @NotNull
     @PositiveOrZero
@@ -74,8 +70,9 @@ public class OperationRequest {
     private BigDecimal paidValue;
 
     @Schema(description = "Operation period", type = "string", example = "2021-01")
-    private YearMonth period = YearMonth.now();
+    private YearMonth period;
 
+    @Size(min = 2)
     @Schema(description = "Observations", type = "string", example = "Amount spent in the month of Christmas")
     private String observations;
 

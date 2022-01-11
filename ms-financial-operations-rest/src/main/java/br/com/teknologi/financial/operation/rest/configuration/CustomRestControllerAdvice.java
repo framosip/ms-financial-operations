@@ -1,4 +1,4 @@
-package br.com.teknologi.financial.operation.rest.config;
+package br.com.teknologi.financial.operation.rest.configuration;
 
 import br.com.teknologi.financial.operation.rest.model.constant.HttpMessagesCodes;
 import br.com.teknologi.financial.operation.rest.model.response.ErrorResponse;
