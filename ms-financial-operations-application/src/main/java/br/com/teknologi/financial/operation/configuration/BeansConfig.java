@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class BeansConfig {
 
-//    @Bean
-//    public OperationService operationService(OperationRepository operationRepository){
-//        log.debug("[Configuration] ===== OperationService Bean created =====");
-//        return new OperationService(operationRepository);
-//    }
+    @Bean
+    public OperationService operationService(OperationRepository operationRepository){
+        log.debug("[Configuration] ===== OperationService Bean created =====");
+        return new OperationService(operationRepository);
+    }
 
 }

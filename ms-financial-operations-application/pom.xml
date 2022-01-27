@@ -41,6 +41,14 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>financial-operations-domain</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>financial-operations-repository</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
