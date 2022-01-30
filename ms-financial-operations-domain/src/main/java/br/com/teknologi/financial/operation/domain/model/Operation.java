@@ -2,11 +2,12 @@ package br.com.teknologi.financial.operation.domain.model;
 
 import br.com.teknologi.financial.operation.domain.constant.OperationSubTypeEnum;
 import br.com.teknologi.financial.operation.domain.constant.OperationTypeEnum;
+import br.com.teknologi.financial.operation.domain.exception.OperationException;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 public class Operation {
@@ -15,14 +16,14 @@ public class Operation {
     private final OperationTypeEnum type;
     private final OperationSubTypeEnum subType;
     private final BigDecimal value;
-    private final List<Installment> installments;
-    private final List<Payment> paidValues;
+    private final Set<Installment> installments;
+    private final Set<Payment> paidValues;
     private final YearMonth period;
     private String observations;
 
     public Operation(OperationTypeEnum type, OperationSubTypeEnum subType,
                      YearMonth period, BigDecimal value,
-                     List<Installment> installments, List<Payment> paidValues) {
+                     Set<Installment> installments, Set<Payment> paidValues) {
 
         this.type = Objects.requireNonNull(type, "Type is required");
         this.subType = Objects.requireNonNull(subType, "Subtype is required");
@@ -31,37 +32,42 @@ public class Operation {
         this.installments = installments;
         this.paidValues = paidValues;
 
-        if(OperationSubTypeEnum.SINGLE.equals(this.subType) &&
+        if(OperationSubTypeEnum.BASIC.equals(this.subType) &&
                 (Objects.isNull(this.paidValues) || this.paidValues.isEmpty())){
-            throw new IllegalArgumentException("Paid values are required when subType is " + OperationSubTypeEnum.SINGLE);
+            throw new OperationException("OPE0001", "Paid values are required when subType is " + OperationSubTypeEnum.BASIC);
         }
 
-        if(OperationSubTypeEnum.SINGLE.equals(this.subType) &&
+        if(OperationSubTypeEnum.BASIC.equals(this.subType) &&
                 (Objects.nonNull(this.installments))){
-            throw new IllegalArgumentException("When subType is " + OperationSubTypeEnum.SINGLE + " installments must be null");
+            throw new OperationException("OPE0002", "When subType is " + OperationSubTypeEnum.BASIC + " installments must be null");
         }
 
         if((OperationSubTypeEnum.INSTALLMENT.equals(this.subType) || OperationSubTypeEnum.CREDITCARD.equals(this.subType)) &&
                 (Objects.isNull(this.installments) || this.installments.isEmpty())){
-            throw new IllegalArgumentException("Installments are required when subType is " + OperationSubTypeEnum.INSTALLMENT + " or " + OperationSubTypeEnum.CREDITCARD);
+            throw new OperationException("OPE0003", "Installments are required when subType is " + OperationSubTypeEnum.INSTALLMENT + " or " + OperationSubTypeEnum.CREDITCARD);
         }
 
         if((OperationSubTypeEnum.INSTALLMENT.equals(this.subType) || OperationSubTypeEnum.CREDITCARD.equals(this.subType)) &&
                 (Objects.nonNull(this.paidValues))){
-            throw new IllegalArgumentException("When subType is " + OperationSubTypeEnum.INSTALLMENT + " or " + OperationSubTypeEnum.CREDITCARD + " paid values must be null");
+            throw new OperationException("OPE0004", "When subType is " + OperationSubTypeEnum.INSTALLMENT + " or " + OperationSubTypeEnum.CREDITCARD + " paid values must be null");
         }
 
-        if(this.getAmount().compareTo(this.value) > 0){
-            throw new IllegalArgumentException("The value is less than the total operation");
+        if(this.getPaidOff().compareTo(this.value) > 0){
+            throw new OperationException("OPE0005", "The total paid off is greater than the operation value");
         }
 
     }
 
     public Operation(UUID id, OperationTypeEnum type, OperationSubTypeEnum subType,
                      YearMonth period, BigDecimal value,
-                     List<Installment> installments, List<Payment> paidValues) {
+                     Set<Installment> installments, Set<Payment> paidValues) {
         this(type, subType, period, value, installments, paidValues);
         this.id = Objects.requireNonNull(id, "Id is required");
+    }
+
+    public Operation(UUID id, Operation operation){
+        this(id, operation.getType(), operation.getSubType(), operation.period, operation.value,
+                operation.getInstallments(), operation.paidValues);
     }
 
     public UUID getId() {
@@ -80,11 +86,11 @@ public class Operation {
         return value;
     }
 
-    public List<Installment> getInstallments() {
+    public Set<Installment> getInstallments() {
         return installments;
     }
 
-    public List<Payment> getPaidValues() {
+    public Set<Payment> getPaidValues() {
         return paidValues;
     }
 
@@ -100,7 +106,13 @@ public class Operation {
         this.observations = observations;
     }
 
-    public BigDecimal getAmount(){
+    public BigDecimal getPaidOff(){
+        if(OperationSubTypeEnum.BASIC.equals(this.subType)){
+            return this.paidValues.stream()
+                    .map(Payment::getPaidValue)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
         return null;
     }
 }

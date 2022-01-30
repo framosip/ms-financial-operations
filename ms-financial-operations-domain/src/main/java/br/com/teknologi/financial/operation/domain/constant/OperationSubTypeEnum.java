@@ -2,7 +2,7 @@ package br.com.teknologi.financial.operation.domain.constant;
 
 public enum OperationSubTypeEnum {
 
-    SINGLE,
+    BASIC,
     INSTALLMENT,
     CREDITCARD
 

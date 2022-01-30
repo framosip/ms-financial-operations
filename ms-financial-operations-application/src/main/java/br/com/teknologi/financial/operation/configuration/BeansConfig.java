@@ -12,7 +12,7 @@ public class BeansConfig {
 
     @Bean
     public OperationService operationService(OperationRepository operationRepository){
-        log.debug("[Configuration] ===== OperationService Bean created =====");
+        log.debug("[Configuration] ===== OperationService bean created =====");
         return new OperationService(operationRepository);
     }
 

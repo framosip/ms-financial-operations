@@ -15,7 +15,7 @@ public class LocalValidatorFactoryConfig {
         LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
         localValidatorFactoryBean.setValidationMessageSource(messageSource);
 
-        log.debug("[Configuration] ===== Local validator factory Bean created =====");
+        log.debug("[Configuration] ===== Local validator factory bean created =====");
 
         return localValidatorFactoryBean;
     }

@@ -15,20 +15,46 @@ public class DictionaryService {
 
     private final MessageSource messageSource;
 
-    public ErrorResponse getMensagem(@NonNull String key) {
+    public ErrorResponse getMessage(@NonNull String key) {
         try {
             return new ErrorResponse(key, this.messageSource.getMessage(key, null, LocaleContextHolder.getLocale()));
         }catch (NoSuchMessageException e){
-            return getMensagem(HttpMessagesCodes.GENERIC_INTERNAL_ERROR_EXCEPTION);
+            return getMessage(HttpMessagesCodes.GENERIC_INTERNAL_ERROR_EXCEPTION);
         }
     }
 
-    public ErrorResponse getMensagem(@NonNull String key, @NonNull String field) {
+    public ErrorResponse getMessageWithField(@NonNull String key, @NonNull String field) {
         try {
-            return new ErrorResponse(key, field, this.messageSource.getMessage(key, null, LocaleContextHolder.getLocale()));
+            String description = field
+                    .concat(" ")
+                    .concat(this.messageSource.getMessage(key, null, LocaleContextHolder.getLocale()));
+            return new ErrorResponse(key, null, description);
         }catch (NoSuchMessageException e){
-            return getMensagem(key);
+            return getMessage(key);
         }
     }
 
+    public ErrorResponse getMessageWithExceptionErrorCode(@NonNull String key, @NonNull String code) {
+        try {
+            String description = this.messageSource.getMessage(key, null, LocaleContextHolder.getLocale())
+                                .concat(". ")
+                                .concat(this.messageSource.getMessage(code, null, LocaleContextHolder.getLocale()));
+            return new ErrorResponse(key, null, description);
+        }catch (NoSuchMessageException e){
+            return getMessage(key);
+        }
+    }
+
+    public ErrorResponse getMessageWithFieldAndDescription(@NonNull String key, @NonNull String field, @NonNull String description) {
+        try {
+            String newDescription = this.messageSource.getMessage(key, null, LocaleContextHolder.getLocale())
+                    .concat(". ")
+                    .concat(field)
+                    .concat(" ")
+                    .concat(description);
+            return new ErrorResponse(key, null, newDescription);
+        }catch (NoSuchMessageException e){
+            return getMessage(key);
+        }
+    }
 }

@@ -54,7 +54,7 @@ public class LocaleConfig {
 
     @PostConstruct
     public void init(){
-        log.debug("[Configuration] ===== Locale Bean created =====");
+        log.debug("[Configuration] ===== Locale bean created =====");
     }
 
 }

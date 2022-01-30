@@ -13,14 +13,14 @@ import lombok.*;
 public class ErrorResponse {
 
     @NonNull
-    @Schema(description = "Error code", type = "string", example = "000.000")
+    @Schema(description = "Error code", type = "string", example = "000.000", required = true)
     private String code;
 
     @Schema(description = "Field name", type = "string", example = "description")
     private String field;
 
     @NonNull
-    @Schema(description = "Error description", type = "string", example = "Field is required")
+    @Schema(description = "Error description", type = "string", example = "Field is required", required = true)
     private String description;
 
 }

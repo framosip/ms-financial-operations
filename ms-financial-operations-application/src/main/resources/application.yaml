@@ -5,5 +5,5 @@ application:
 
 spring:
   messages:
-    basename: validations, errors
+    basename: http_errors, domain_exceptions
     encoding: UTF-8

@@ -26,7 +26,7 @@ public abstract class OperationController<T extends OperationRequest> {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<ResponseEntity<OperationResponse>> save(T operation, UriComponentsBuilder componentsBuilder) {
         return Mono.just(modelMapper.map(operation, br.com.teknologi.financial.operation.domain.model.Operation.class))
-                .flatMap(operationService::save)
+                .flatMap(operationService::insert)
                 .map(operationSaved -> modelMapper.map(operationSaved, OperationResponse.class))
                 .flatMap(operationResponse -> Mono.just(componentsBuilder.path(getCreatedURI()).buildAndExpand(operationResponse.getId())).zipWith(Mono.just(operationResponse)))
                 .map(responseTuple -> ResponseEntity.created(responseTuple.getT1().toUri()).body(responseTuple.getT2()));        

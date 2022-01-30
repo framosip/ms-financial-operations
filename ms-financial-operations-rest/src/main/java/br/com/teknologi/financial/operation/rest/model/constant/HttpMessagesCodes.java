@@ -7,6 +7,7 @@ public abstract class HttpMessagesCodes {
 
     public static final String GENERIC_BAD_REQUEST_EXCEPTION = "400.000";
     public static final String REQUEST_WITH_INVALID_VALUE = "400.001";
+    public static final String OPERATION_EXCEPTION = "400.002";
 
     public static final String FIELD_VALIDATION_ERROR = "412.001";
 

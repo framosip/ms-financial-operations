@@ -17,7 +17,7 @@ public class OpenAPIConfig {
             @Value("${application.description}") String description,
             @Value("${application.version}") String version) {
 
-        log.debug("[Configuration] ===== OpenAPI Bean created =====");
+        log.debug("[Configuration] ===== OpenAPI bean created =====");
 
         return new OpenAPI()
                 .info(new Info().title(name).version(version).description(description));
