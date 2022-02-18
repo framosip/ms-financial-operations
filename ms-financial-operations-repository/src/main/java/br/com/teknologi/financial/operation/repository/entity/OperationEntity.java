@@ -2,14 +2,11 @@ package br.com.teknologi.financial.operation.repository.entity;
 
 import br.com.teknologi.financial.operation.repository.converter.YearMonthAttributeConverter;
 import lombok.*;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbConvertedBy;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.UUID;
 
 @DynamoDbBean
 @Setter
@@ -20,7 +17,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OperationEntity {
 
-    private UUID id;
+    @NonNull
+    private String pk;
+
+    @NonNull
+    private String sk;
 
     @NonNull
     private String type;
@@ -41,8 +42,18 @@ public class OperationEntity {
     private String observations;
 
     @DynamoDbPartitionKey
-    public UUID getId() {
-        return id;
+    public String getPk() {
+        return pk;
+    }
+
+    @DynamoDbSortKey
+    public String getSk() {
+        return sk;
+    }
+
+    @DynamoDbIgnore
+    public List<PaymentEntity> getPaidValues() {
+        return paidValues;
     }
 
     @DynamoDbConvertedBy(YearMonthAttributeConverter.class)

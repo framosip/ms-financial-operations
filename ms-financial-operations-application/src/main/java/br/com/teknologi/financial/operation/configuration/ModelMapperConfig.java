@@ -1,5 +1,6 @@
 package br.com.teknologi.financial.operation.configuration;
 
+import br.com.teknologi.financial.operation.repository.converter.OperationToOperationEntityConverter;
 import br.com.teknologi.financial.operation.rest.converter.BasicOperationRequestToOperationConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -14,6 +15,7 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper(){
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.addConverter(new BasicOperationRequestToOperationConverter());
+        modelMapper.addConverter(new OperationToOperationEntityConverter());
 
         log.debug("[Configuration] ===== ModelMapper bean created =====");
 

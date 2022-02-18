@@ -8,6 +8,7 @@ import br.com.teknologi.financial.operation.rest.model.request.BasicOperationReq
 import lombok.NonNull;
 import org.modelmapper.AbstractConverter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public class BasicOperationRequestToOperationConverter extends AbstractConverter<BasicOperationRequest, Operation> {
@@ -15,7 +16,7 @@ public class BasicOperationRequestToOperationConverter extends AbstractConverter
     @Override
     protected Operation convert(@NonNull BasicOperationRequest basicOperationRequest) {
 
-        Set<Payment> paidValues = Set.of(new Payment(basicOperationRequest.getPaidValue()));
+        Set<Payment> paidValues = Set.of(new Payment(LocalDate.now(), basicOperationRequest.getPaidValue()));
 
         return new Operation(OperationTypeEnum.valueOf(basicOperationRequest.getType().toString()), OperationSubTypeEnum.BASIC,
                 basicOperationRequest.getPeriod(), basicOperationRequest.getValue(), null,
